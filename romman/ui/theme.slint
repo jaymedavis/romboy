@@ -1,0 +1,41 @@
+export struct Durations {
+    fast: duration,
+    medium: duration,
+    slow: duration,
+}
+
+export struct Palette {
+    // solids
+    black: brush,
+    white: brush,
+
+    // gradients
+    heliotrope-gradient: brush,
+}
+
+export struct Window {
+    min-width: length,
+    min-height: length,
+    padding: length,
+}
+
+export global Theme {
+    in property <Durations> durations: {
+        fast: 125ms,
+        medium: 200ms,
+        slow: 500ms,
+    };
+    in property <Palette> palette: {
+        // solids
+        black: #000000,
+        white: #ffffff,
+
+        // gradients
+        heliotrope-gradient: @linear-gradient(180deg, #896fff 0%, #39316B 100%),
+    };
+    in property <Window> window: {
+        min-width: 450px,
+        min-height: 300px,
+        padding: 20px,
+    };
+}

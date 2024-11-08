@@ -1,0 +1,48 @@
+import { StandardTableView } from "std-widgets.slint";
+
+export component Table inherits StandardTableView {
+    vertical-stretch: 0;
+
+    sort-ascending(index) => {
+        TableAdapter.sort_ascending(index);
+    }
+
+    sort-descending(index) => {
+        TableAdapter.sort_descending(index);
+    }
+
+    columns: [
+        { title: "File" },
+        { title: "Platform"},
+        { title: "Status" },
+        { title: "Date" },
+    ];
+
+    rows: TableAdapter.row_data;
+}
+
+export global TableAdapter {
+    callback sort_ascending(int);
+    callback sort_descending(int);
+
+    in-out property <[[StandardListViewItem]]> row_data: [
+        [
+            { text: "Legend of Zelda", clicked : { } },
+            { text: "nes" },
+            { text: "In Library" },
+            { text: "yesterday" },
+        ],
+        [
+            { text: "Rygar" },
+            { text: "nes" },
+            { text: "In Library" },
+            { text: "last month" },
+        ],
+        [
+            { text: "Chrono Trigger" },
+            { text: "snes" },
+            { text: "Not in Library" },
+            { text: "today" },
+        ]
+    ];
+}
