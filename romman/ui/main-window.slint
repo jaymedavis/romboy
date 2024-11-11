@@ -1,16 +1,51 @@
-import { Theme } from "theme.slint";
+import { ListView } from "std-widgets.slint";
 import { Table, TableAdapter } from "table.slint";
+import { TableHeader } from "table-header.slint";
+import { TableRow, TableRowView } from "table-row.slint";
+import { Theme } from "theme.slint";
 
+export { TableRow }
+
+// table
 export { TableAdapter }
 
 export component MainWindow inherits Window {
-    title: "Romman";
-    min-width: Theme.window.min-width;
-    min-height: Theme.window.min-height;
-    background: Theme.palette.black;
+    in property <[TableRow]> rows;
 
-    Table {
-        width: parent.width - Theme.window.padding;
+    background: Theme.palette.black;
+    min-height: Theme.window.min-height;
+    min-width: Theme.window.min-width;
+    title: "Romman";
+
+    VerticalLayout {
         height: parent.height - Theme.window.padding;
+        // table
+        // padding-top: 170px;
+        vertical-stretch: 1;
+        width: parent.width - Theme.window.padding;
+
+        HorizontalLayout {
+            TableHeader {
+                text: "File";
+                width: 35%;
+            }
+
+            TableHeader {
+                text: "Platform";
+            }
+        }
+
+        ListView {
+            for data[idx] in rows: TableRowView {
+                even: mod(idx, 2) == 0;
+                filename: data.filename;
+                platform: data.platform;
+            }
+        }
     }
+
+    // Table {
+    //     width: parent.width - Theme.window.padding;
+    //     height: parent.height - Theme.window.padding;
+    // }
 }

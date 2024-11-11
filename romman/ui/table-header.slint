@@ -1,0 +1,42 @@
+import { ListView } from "std-widgets.slint";
+import { Theme } from "theme.slint";
+
+export component TableHeader inherits Window {
+    in property <string> text;
+
+    ta := TouchArea {
+        cell := Rectangle {
+            background: Theme.table_header.background;
+            height: Theme.table_header.height;
+
+            GridLayout {
+                padding-left: Theme.table.text-padding;
+
+                Text {
+                    color: Theme.table_header.color;
+                    font-family: Theme.table.font;
+                    font-size: Theme.table.text-height;
+                    height: Theme.table_header.height;
+                    text: root.text;
+                    vertical-alignment: center;
+                }
+            }
+
+            GridLayout {
+                padding-top: Theme.table_header.height - Theme.table_header.border;
+
+                border := Rectangle {
+                    background: Theme.table_header.border-background;
+                    height: Theme.table_header.border;
+                }
+            }
+        }
+    }
+
+    states [
+        active-hover when ta.has-hover: {
+            border.background: Theme.table_header.border-background-active;
+            cell.background: Theme.table_header.cell-background-active;
+        }
+    ]
+}

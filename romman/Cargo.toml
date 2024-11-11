@@ -5,7 +5,12 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4"
+config = "0.13"
+directories = "4.0"
+serde = "1.0"
+serde_derive = "1.0"
 slint = "1.8.0"
+zip = "0.5.13"
 
 [build-dependencies]
 slint-build = "1.8.0"

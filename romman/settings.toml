@@ -1,0 +1,13 @@
+[path]
+zips = "~/OneDrive/RomM/zips"
+roms = "~/OneDrive/RomM/library/roms"
+
+[platforms]
+3ds = ["3ds"]
+gb = ["gb"]
+gba = ["gba", "srl"]
+gbc = ["gbc"]
+n64 = ["z64", "v64", "n64"]
+nds = ["nds", "srl"]
+nes = ["nes", "nez", "unf", "unif"]
+snes = ["sfc", "smc"]

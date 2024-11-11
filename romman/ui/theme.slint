@@ -14,9 +14,31 @@ export struct Palette {
 }
 
 export struct Window {
-    min-width: length,
     min-height: length,
+    min-width: length,
     padding: length,
+}
+
+export struct Table {
+    even-background: color,
+    even-text: color,
+    font-size: length,
+    font: string,
+    odd-background: color,
+    odd-text: color,
+    platform-image-size: length,
+    text-height: length,
+    text-padding: length,
+}
+
+export struct TableHeader {
+    background: color,
+    border-background-active: color,
+    border-background: color,
+    border: length,
+    cell-background-active: color,
+    color: color,
+    height: length,
 }
 
 export global Theme {
@@ -25,6 +47,7 @@ export global Theme {
         medium: 200ms,
         slow: 500ms,
     };
+
     in property <Palette> palette: {
         // solids
         black: #000000,
@@ -33,9 +56,35 @@ export global Theme {
         // gradients
         heliotrope-gradient: @linear-gradient(180deg, #896fff 0%, #39316B 100%),
     };
+
     in property <Window> window: {
-        min-width: 450px,
-        min-height: 300px,
+        font-size: 9pt,
+        font: "Nimbus Sans Regular1",
+        min-height: 500px,
+        min-width: 650px,
         padding: 20px,
+        platform-size: 44px,
+    };
+
+    in property <Table> table: {
+        even-background: #000000,
+        even-text: #c1c1c1,
+        font-size: 9pt,
+        font: "Nimbus Sans Regular1",
+        odd-background: #0f0f0f,
+        odd-text: #ffffff,
+        platform-image-size: 14px,
+        text-height: 14px,
+        text-padding: 12px,
+    };
+
+    in property <TableHeader> table_header: {
+        background: #1c1c1c,
+        border-background-active: #1f1f1f,
+        border-background: #2e2e2e,
+        border: 2px,
+        cell-background-active: #131313,
+        color: #cfcfcf,
+        height: 40px,
     };
 }

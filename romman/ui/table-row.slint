@@ -1,0 +1,53 @@
+import { ListView } from "std-widgets.slint";
+import { Theme } from "theme.slint";
+
+export struct TableRow {
+    filename: string,
+    platform: image,
+    // status: string,
+    // modified: string,
+}
+
+export component TableRowView inherits Window {
+    in property <bool> even;
+    in property <image> platform;
+    in property <string> filename;
+    in property <string> modified;
+    in property <string> status;
+
+    VerticalLayout {
+        ta := TouchArea {
+
+            row := Rectangle {
+                background: even ? Theme.table.even-background : Theme.table.odd-background;
+                height: 35px;
+
+                GridLayout {
+                    padding-left: Theme.table.text-padding;
+
+                    Text {
+                        color: even ? Theme.table.even-text : Theme.table.odd-text;
+                        font-family: Theme.table.font;
+                        font-size: 14 * 0.0769rem;
+                        height: Theme.table_header.height - 5px;
+                        width: 35%;
+                        overflow: elide;
+                        text: root.filename;
+                        vertical-alignment: center;
+                    }
+
+                    Image {
+                        source: root.platform;
+                        horizontal-alignment: left;
+                    }
+                }
+            }
+        }
+    }
+
+    states [
+        active-hover when ta.has-hover: {
+            row.background: Theme.table.odd-background;
+        }
+    ]
+}
