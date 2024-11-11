@@ -20,7 +20,7 @@ impl Rom {
             let file = archive.by_index(i).unwrap();
             let outpath = match file.enclosed_name() {
                 Some(path) => {
-                    print!("processing {}", path.display());
+                    println!("processing {}", path.display());
                     path
                 }
                 None => {

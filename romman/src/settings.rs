@@ -46,7 +46,7 @@ impl Settings {
             }
         }
 
-        print!("no platform found for extension: {}", extension);
+        println!("no platform found for extension: {}", extension);
 
         None
     }
