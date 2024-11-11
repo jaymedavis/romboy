@@ -1,4 +1,3 @@
-use chrono::{DateTime, Local};
 use std::format;
 use rom::Rom;
 use crate::settings::Settings;
@@ -30,20 +29,17 @@ fn main() {
     for (index, item) in fs::read_dir(zips_path).unwrap().into_iter().enumerate() {
         let entry = item.unwrap();
         let path = entry.path();
-        let metadata = fs::metadata(&path).unwrap();
 
         let rom = Rom::new(&path);
         let platform = settings.get_platform_for_extension(&rom.extension).unwrap();
         let asset_path = format!("assets/{}.png", platform);
-        // let filename = path.file_name().unwrap().to_string_lossy().to_owned().to_string();
-        // let modified: DateTime<Local> = metadata.modified().unwrap().into();
+
         let image = Image::load_from_path(Path::new(&asset_path)).unwrap();
 
         let table_entry = TableRow {
             filename: SharedString::from(&rom.name),
-            // status: SharedString::from("Synced"),
+            status: SharedString::from("Synced"),
             platform: image,
-            // modified: modified.format("%Y-%m-%d %H:%M:%S").to_string(),
         };
 
         temp_rows.push(table_entry);

@@ -6,6 +6,7 @@ use std::io::BufReader;
 pub(crate) struct Rom {
     pub(crate) name: String,
     pub(crate) extension: String,
+    pub(crate) status: String
 }
 
 impl Rom {
@@ -35,6 +36,7 @@ impl Rom {
                 result = Rom {
                     name: outpath.file_stem().unwrap().to_str().unwrap().to_string(),
                     extension: extension.to_string(),
+                    status: "Synced".to_string()
                 };
             }
         }

@@ -4,15 +4,13 @@ import { Theme } from "theme.slint";
 export struct TableRow {
     filename: string,
     platform: image,
-    // status: string,
-    // modified: string,
+    status: string,
 }
 
 export component TableRowView inherits Window {
     in property <bool> even;
     in property <image> platform;
     in property <string> filename;
-    in property <string> modified;
     in property <string> status;
 
     VerticalLayout {
@@ -30,15 +28,26 @@ export component TableRowView inherits Window {
                         font-family: Theme.table.font;
                         font-size: 14 * 0.0769rem;
                         height: Theme.table_header.height - 5px;
-                        width: 35%;
                         overflow: elide;
                         text: root.filename;
                         vertical-alignment: center;
+                        width: 45%;
                     }
 
                     Image {
-                        source: root.platform;
                         horizontal-alignment: left;
+                        source: root.platform;
+                        width: 35%;
+                    }
+
+                    Text {
+                        color: green;
+                        font-family: Theme.table.font;
+                        font-size: 14 * 0.0769rem;
+                        height: Theme.table_header.height - 5px;
+                        text: root.status;
+                        vertical-alignment: center;
+                        width: 20%;
                     }
                 }
             }

@@ -27,11 +27,17 @@ export component MainWindow inherits Window {
         HorizontalLayout {
             TableHeader {
                 text: "File";
-                width: 35%;
+                width: 45%;
             }
 
             TableHeader {
                 text: "Platform";
+                width: 35%;
+            }
+
+            TableHeader {
+                text: "Status";
+                width: 20%;
             }
         }
 
@@ -40,6 +46,7 @@ export component MainWindow inherits Window {
                 even: mod(idx, 2) == 0;
                 filename: data.filename;
                 platform: data.platform;
+                status: data.status;
             }
         }
     }
