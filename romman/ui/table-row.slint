@@ -26,7 +26,7 @@ export component TableRowView inherits Window {
                     Text {
                         color: even ? Theme.table.even-text : Theme.table.odd-text;
                         font-family: Theme.table.font;
-                        font-size: 14 * 0.0769rem;
+                        font-size: Theme.table.font-size;
                         height: Theme.table_header.height - 5px;
                         overflow: elide;
                         text: root.filename;
@@ -43,7 +43,7 @@ export component TableRowView inherits Window {
                     Text {
                         color: green;
                         font-family: Theme.table.font;
-                        font-size: 14 * 0.0769rem;
+                        font-size: Theme.table.font-size;
                         height: Theme.table_header.height - 5px;
                         text: root.status;
                         vertical-alignment: center;
