@@ -17,8 +17,6 @@ fn main() {
 
     // get the app settings
     let settings = Settings::new().expect("Failed to load settings.toml");
-    let zips_path = settings.zips_path();
-    let roms_path = settings.roms_path();
 
     // capture our files temporarily
     let mut temp_rows: Vec<TableRow> = Vec::new();
@@ -26,23 +24,38 @@ fn main() {
     // table method
     // let row_data: Rc<VecModel<slint::ModelRc<StandardListViewItem>>> = Rc::new(VecModel::default());
 
-    for (index, item) in fs::read_dir(zips_path).unwrap().into_iter().enumerate() {
-        let entry = item.unwrap();
-        let path = entry.path();
+    // read the files in the zips directory
+    for (_index, item) in fs::read_dir(settings.zips_path()).unwrap().into_iter().enumerate() {
+        let path = item.unwrap().path();
 
+        // validate the zip file is a valid rom
         let rom = Rom::new(&path);
-        let platform = settings.get_platform_for_extension(&rom.extension).unwrap();
-        let asset_path = format!("assets/{}.png", platform);
+        if rom.is_err() {
+            println!("error loading rom: {}", rom.err().unwrap().message);
+            continue;
+        }
 
+        // validate the platform
+        let platform = Rom::get_platform_for_extension(&settings, rom.clone().unwrap());
+        if platform.is_err() {
+            println!("error validating platform: {}", platform.err().unwrap().message);
+            continue;
+        }
+
+        // push the rows to the main window
+        let asset_path = format!("assets/{}.png", &platform.unwrap());
         let image = Image::load_from_path(Path::new(&asset_path)).unwrap();
 
         let table_entry = TableRow {
-            filename: SharedString::from(&rom.name),
+            filename: SharedString::from(&rom.unwrap().name),
             status: SharedString::from("Synced"),
             platform: image,
         };
 
         temp_rows.push(table_entry);
+
+        // create the file
+        // Rom::create_file(&settings, rom.clone().unwrap());
 
         // table method
         // let items = Rc::new(VecModel::default());

@@ -3,13 +3,13 @@ use directories::UserDirs;
 use serde_derive::Deserialize;
 use std::collections::HashMap;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub(crate) struct Settings {
     path: Path,
-    platforms: HashMap<String, Vec<String>>,
+    pub(crate) platforms: HashMap<String, Vec<String>>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 struct Path {
     zips: String,
     roms: String,
@@ -37,17 +37,5 @@ impl Settings {
         let home_dir = user_dirs.home_dir().to_str().unwrap();
 
         path.replace("~", home_dir)
-    }
-
-    pub(crate) fn get_platform_for_extension(&self, extension: &str) -> Option<String> {
-        for (platform, extensions) in &self.platforms {
-            if extensions.contains(&extension.to_string()) {
-                return Some(platform.clone());
-            }
-        }
-
-        println!("no platform found for extension: {}", extension);
-
-        None
     }
 }
