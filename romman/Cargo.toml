@@ -1,7 +1,15 @@
 [package]
-name = "romman"
-version = "0.1.0"
+authors = ["Jayme Davis <jayme.davis@gmail.com>"]
+build = "build.rs"
+description = "manage your roms"
 edition = "2021"
+license = "Apache 2.0"
+name = "romboy"
+repository = "https://github.com/jaymedavis/romboy"
+version = "0.1.0"
+
+[package.metadata.winres]
+LegalCopyright = "Copyright © 2024"
 
 [dependencies]
 chrono = "0.4"

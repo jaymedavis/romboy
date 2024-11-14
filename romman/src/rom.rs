@@ -73,7 +73,7 @@ impl Rom {
     }
 
     pub(crate) fn exists(settings: &Settings, rom: Rom) -> bool {
-        let rom_extract = Self::get_extract_data(settings, rom);
+        let rom_extract = Self::rom_extract(settings, rom);
 
         // println!("rom path: {}", rom_extract.path);
         // println!("rom target: {}", rom_extract.target.display());
@@ -84,22 +84,21 @@ impl Rom {
     pub(crate) fn create_file(settings: &Settings, rom: Rom) {
         let mut archive = Self::get_archive(&rom.path);
         let mut file = archive.by_index(0).unwrap();
-        let file_name = file.name();
 
-        // join the roms path and the platformm
-        let extract_target = format!("{}/{}", settings.roms_path(), Rom::get_platform_for_extension(settings, rom).unwrap());
-        let extract_path = Path::new(extract_target.as_str());
+        // get the path and target
+        let rom_extract = Self::rom_extract(settings, rom);
+        let path = Path::new(rom_extract.path.as_str());
 
-        // create the directory if it doesn't exist
-        if !extract_path.exists() {
-            std::fs::create_dir(extract_path).unwrap();
+        // create the platform directory if it doesn't exist
+        if !path.exists() {
+            std::fs::create_dir(path).unwrap();
         }
 
         // create the file by joining the extract path to the file name
-        let target_path = extract_path.join(file_name);
+        let target_path = path.join(file.name());
 
         if !target_path.exists() {
-            // create the file and copy the contents
+            // create the file and copy the contents from the archive
             let mut output_file = File::create(&target_path).unwrap();
             io::copy(&mut file, &mut output_file).unwrap();
 
@@ -114,7 +113,7 @@ impl Rom {
         zip::ZipArchive::new(reader).unwrap()
     }
 
-    fn get_extract_data(settings: &Settings, rom: Rom) -> RomExtract {
+    fn rom_extract(settings: &Settings, rom: Rom) -> RomExtract {
         let mut archive = Self::get_archive(&rom.path);
         let file = archive.by_index(0).unwrap();
 
