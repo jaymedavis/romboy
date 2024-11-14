@@ -14,3 +14,4 @@ zip = "0.5.13"
 
 [build-dependencies]
 slint-build = "1.8.0"
+winresource = "0.1.17"
