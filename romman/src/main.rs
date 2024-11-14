@@ -1,8 +1,9 @@
-use std::format;
-use rom::Rom;
 use crate::settings::Settings;
+use rom::Rom;
 use slint::*;
 use slint::VecModel;
+use std::env;
+use std::format;
 use std::fs;
 use std::path::Path;
 use std::rc::Rc;
@@ -18,11 +19,8 @@ fn main() {
     // get the app settings
     let settings = Settings::new().expect("Failed to load settings.toml");
 
-    // capture our files temporarily
+    // hold our processed file information
     let mut temp_rows: Vec<TableRow> = Vec::new();
-
-    // table method
-    // let row_data: Rc<VecModel<slint::ModelRc<StandardListViewItem>>> = Rc::new(VecModel::default());
 
     // read the files in the zips directory
     for (_index, item) in fs::read_dir(settings.zips_path()).unwrap().into_iter().enumerate() {
@@ -43,44 +41,33 @@ fn main() {
         }
 
         // push the rows to the main window
-        let asset_path = format!("assets/{}.png", &platform.unwrap());
-        let image = Image::load_from_path(Path::new(&asset_path)).unwrap();
+        let status = if Rom::exists(&settings, rom.clone().unwrap()) { "In Library" } else { "Not In Library" };
 
         let table_entry = TableRow {
             filename: SharedString::from(&rom.unwrap().name),
-            status: SharedString::from("Synced"),
-            platform: image,
+            status: SharedString::from(status),
+            platform: asset_image(platform.unwrap()),
         };
 
         temp_rows.push(table_entry);
 
         // create the file
         // Rom::create_file(&settings, rom.clone().unwrap());
-
-        // table method
-        // let items = Rc::new(VecModel::default());
-
-        // let filename = StandardListViewItem::from(slint::format!("{}", path.file_name().unwrap().to_string_lossy().to_owned()));
-        // items.push(filename);
-
-        // items.push("nes".into());
-
-        // let library_status = StandardListViewItem::from("Synced");
-        // // library_status.color = Some("green".to_string());
-        // items.push(library_status.into());
-
-        // let filedate = StandardListViewItem::from(slint::format!("{}", modified.format("%Y-%m-%d %H:%M:%S")));
-        // items.push(filedate.clone());
-
-        // row_data.push(items.clone().into());
     }
 
     //  add our temp rows to the main window
     let table_rows: Rc<VecModel<TableRow>> = Rc::new(VecModel::from(temp_rows));
     main_window.set_rows(table_rows.into());
 
-    // table method
-    // main_window.global::<TableAdapter>().set_row_data(row_data.clone().into());
+    // tie up our events
+    main_window.global::<TableRowBackend>().on_clicked(|id| {
+		println!("On button clicked: id={}", id);
+	});
 
     main_window.run().unwrap();
+}
+
+fn asset_image(platform: String) -> Image {
+    let asset_path = format!("assets/{}.png", platform);
+    Image::load_from_path(Path::new(&asset_path)).unwrap()
 }

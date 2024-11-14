@@ -1,10 +1,14 @@
-import { ListView } from "std-widgets.slint";
+import { ListView, Button } from "std-widgets.slint";
 import { Theme } from "theme.slint";
 
 export struct TableRow {
     filename: string,
     platform: image,
     status: string,
+}
+
+export global TableRowBackend {
+    pure callback clicked(string);
 }
 
 export component TableRowView inherits Window {
@@ -31,23 +35,51 @@ export component TableRowView inherits Window {
                         overflow: elide;
                         text: root.filename;
                         vertical-alignment: center;
-                        width: 45%;
+                        width: 55%;
                     }
 
                     Image {
                         horizontal-alignment: left;
                         source: root.platform;
-                        width: 35%;
+                        width: 15%;
                     }
 
                     Text {
-                        color: green;
+                        color: root.status == "In Library" ? #5E8F68 : #CF6D24;
                         font-family: Theme.table.font;
                         font-size: Theme.table.font-size;
                         height: Theme.table_header.height - 5px;
                         text: root.status;
                         vertical-alignment: center;
                         width: 20%;
+                    }
+
+                    Rectangle {
+                        height: Theme.table_header.height;
+
+                        TouchArea {
+                            height: 100%;
+                            width: 100%;
+
+                            clicked => {
+                                TableRowBackend.clicked("test test");
+                            }
+
+                            Rectangle {
+                                border-color: root.status == "In Library" ? #5E8F68 : grey;
+                                border-radius: 2px;
+                                border-width: 1px;
+                                background: root.status == "In Library" ? #304F41 : black;
+                                height: 22px;
+                                width: 52px;
+
+                                Text {
+                                    font-size: Theme.table.font-size - 2pt;
+                                    padding-left: 5px;
+                                    text: root.status == "In Library" ? "add" : "remove";
+                                }
+                            }
+                        }
                     }
                 }
             }

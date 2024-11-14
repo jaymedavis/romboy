@@ -5,12 +5,18 @@ use std::path::{Path, PathBuf};
 
 use crate::settings::Settings;
 
-#[derive(Clone, Debug, Deserialize, Default)]
+#[derive(Clone, Debug, Default)]
 pub(crate) struct Rom {
     pub(crate) name: String,
     pub(crate) extension: String,
     pub(crate) path: PathBuf,
     // pub(crate) status: String
+}
+
+#[derive(Debug, Default)]
+pub(crate) struct RomExtract {
+    pub(crate) path: String,
+    pub(crate) target: PathBuf,
 }
 
 #[derive(Clone, Debug)]
@@ -27,8 +33,6 @@ impl Rom {
             return Err(RomError {
                 message: format!("{} files in archive: {}, expecting one", archive.len(), path.file_name().unwrap().to_str().unwrap())
              });
-        } else {
-            println!("checking archive: {}", path.display());
         }
 
         // get the only file in the archive
@@ -68,6 +72,15 @@ impl Rom {
         })
     }
 
+    pub(crate) fn exists(settings: &Settings, rom: Rom) -> bool {
+        let rom_extract = Self::get_extract_data(settings, rom);
+
+        // println!("rom path: {}", rom_extract.path);
+        // println!("rom target: {}", rom_extract.target.display());
+
+        rom_extract.target.exists()
+    }
+
     pub(crate) fn create_file(settings: &Settings, rom: Rom) {
         let mut archive = Self::get_archive(&rom.path);
         let mut file = archive.by_index(0).unwrap();
@@ -99,5 +112,19 @@ impl Rom {
         let reader = BufReader::new(zip_file);
 
         zip::ZipArchive::new(reader).unwrap()
+    }
+
+    fn get_extract_data(settings: &Settings, rom: Rom) -> RomExtract {
+        let mut archive = Self::get_archive(&rom.path);
+        let file = archive.by_index(0).unwrap();
+
+        let extract_target = format!("{}/{}", settings.roms_path(), Rom::get_platform_for_extension(settings, rom).unwrap());
+        let extract_path = Path::new(extract_target.as_str());
+        let target_path = extract_path.join(file.name());
+
+        RomExtract {
+            path: extract_target,
+            target: target_path,
+        }
     }
 }
