@@ -3,19 +3,22 @@ import { Theme } from "theme.slint";
 
 export struct TableRow {
     filename: string,
+    in_library: bool,
     platform: image,
     status: string,
 }
 
 export global TableRowBackend {
-    pure callback clicked(string);
+    pure callback clicked(string, bool);
 }
 
 export component TableRowView inherits Window {
     in property <bool> even;
+    in property <bool> in_library;
     in property <image> platform;
     in property <string> filename;
     in property <string> status;
+    in property <float> percent;
 
     VerticalLayout {
         ta := TouchArea {
@@ -45,7 +48,7 @@ export component TableRowView inherits Window {
                     }
 
                     Text {
-                        color: root.status == "In Library" ? #5E8F68 : #CF6D24;
+                        color: root.in_library ? #5E8F68 : grey;
                         font-family: Theme.table.font;
                         font-size: Theme.table.font-size;
                         height: Theme.table_header.height - 5px;
@@ -62,21 +65,21 @@ export component TableRowView inherits Window {
                             width: 100%;
 
                             clicked => {
-                                TableRowBackend.clicked("test test");
+                                TableRowBackend.clicked(root.filename, root.in_library);
                             }
 
                             Rectangle {
-                                border-color: root.status == "In Library" ? #5E8F68 : grey;
+                                background: root.in_library ? black : #304F41;
+                                border-color: root.in_library ? grey : #5E8F68;
                                 border-radius: 2px;
                                 border-width: 1px;
-                                background: root.status == "In Library" ? #304F41 : black;
-                                height: 22px;
-                                width: 52px;
+                                height: 24px;
+                                width: 62px;
 
                                 Text {
                                     font-size: Theme.table.font-size - 2pt;
                                     padding-left: 5px;
-                                    text: root.status == "In Library" ? "add" : "remove";
+                                    text: root.in_library ? "remove" : "add";
                                 }
                             }
                         }

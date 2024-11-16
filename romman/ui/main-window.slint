@@ -1,4 +1,4 @@
-import { ListView } from "std-widgets.slint";
+import { ListView, ProgressIndicator } from "std-widgets.slint";
 import { TableHeader } from "table-header.slint";
 import { TableRow, TableRowBackend, TableRowView } from "table-row.slint";
 import { Theme } from "theme.slint";
@@ -7,6 +7,7 @@ export { TableRow, TableRowBackend }
 
 export component MainWindow inherits Window {
     in property <[TableRow]> rows;
+    in property <float> percent;
 
     background: Theme.palette.black;
     min-height: Theme.window.min-height;
@@ -39,6 +40,12 @@ export component MainWindow inherits Window {
 
             TableHeader {
                 width: 10%;
+
+                ProgressIndicator {
+                    width: parent.width / 2;
+                    height: parent.height / 2;
+                    progress: percent;
+                }
             }
         }
 
@@ -46,6 +53,7 @@ export component MainWindow inherits Window {
             for data[idx] in rows: TableRowView {
                 even: mod(idx, 2) == 0;
                 filename: data.filename;
+                in_library: data.in_library;
                 platform: data.platform;
                 status: data.status;
             }

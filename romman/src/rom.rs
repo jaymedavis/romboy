@@ -14,9 +14,9 @@ pub(crate) struct Rom {
 }
 
 #[derive(Debug, Default)]
-pub(crate) struct RomExtract {
-    pub(crate) path: String,
-    pub(crate) target: PathBuf,
+struct RomExtract {
+    path: String,
+    target: PathBuf,
 }
 
 #[derive(Clone, Debug)]
@@ -81,7 +81,7 @@ impl Rom {
         rom_extract.target.exists()
     }
 
-    pub(crate) fn create_file(settings: &Settings, rom: Rom) {
+    pub(crate) fn modify_file(settings: &Settings, rom: Rom, delete_file: bool) {
         let mut archive = Self::get_archive(&rom.path);
         let mut file = archive.by_index(0).unwrap();
 
@@ -90,19 +90,24 @@ impl Rom {
         let path = Path::new(rom_extract.path.as_str());
 
         // create the platform directory if it doesn't exist
-        if !path.exists() {
+        if !path.exists() && !delete_file {
             std::fs::create_dir(path).unwrap();
         }
 
         // create the file by joining the extract path to the file name
         let target_path = path.join(file.name());
 
-        if !target_path.exists() {
+        if !target_path.exists() && !delete_file {
             // create the file and copy the contents from the archive
             let mut output_file = File::create(&target_path).unwrap();
-            io::copy(&mut file, &mut output_file).unwrap();
+            copy(&mut file, &mut output_file).unwrap();
 
             println!("creating file {}", target_path.display());
+        } else {
+            // delete the file
+            fs::remove_file(&target_path).unwrap();
+
+            println!("deleting file {}", target_path.display());
         }
     }
 
