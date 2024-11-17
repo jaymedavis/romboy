@@ -1,6 +1,5 @@
-use serde_derive::Deserialize;
-use std::fs::{self, File};
-use std::io::{self, copy, BufReader};
+use std::fs::{remove_file, File};
+use std::io::{copy, BufReader};
 use std::path::{Path, PathBuf};
 
 use crate::settings::Settings;
@@ -105,14 +104,14 @@ impl Rom {
             println!("creating file {}", target_path.display());
         } else {
             // delete the file
-            fs::remove_file(&target_path).unwrap();
+            remove_file(&target_path).unwrap();
 
             println!("deleting file {}", target_path.display());
         }
     }
 
     fn get_archive(path: &PathBuf) -> zip::ZipArchive<BufReader<File>> {
-        let zip_file = fs::File::open(path).unwrap();
+        let zip_file = File::open(path).unwrap();
         let reader = BufReader::new(zip_file);
 
         zip::ZipArchive::new(reader).unwrap()
