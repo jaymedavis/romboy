@@ -7,12 +7,18 @@ use std::collections::HashMap;
 pub(crate) struct Settings {
     path: Path,
     pub(crate) platforms: HashMap<String, Vec<String>>,
+    pub(crate) logging: Logging,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 struct Path {
     zips: String,
     roms: String,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub(crate) struct Logging {
+    pub(crate) mode: String,
 }
 
 impl Settings {

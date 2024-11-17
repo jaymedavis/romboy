@@ -1,8 +1,8 @@
+use crate::settings::Settings;
+use log::{trace, info};
 use std::fs::{remove_file, File};
 use std::io::{copy, BufReader};
 use std::path::{Path, PathBuf};
-
-use crate::settings::Settings;
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Rom {
@@ -74,8 +74,7 @@ impl Rom {
     pub(crate) fn exists(settings: &Settings, rom: Rom) -> bool {
         let rom_extract = Self::rom_extract(settings, rom);
 
-        // println!("rom path: {}", rom_extract.path);
-        // println!("rom target: {}", rom_extract.target.display());
+        trace!("file in zip: {}", rom_extract.target.display());
 
         rom_extract.target.exists()
     }
@@ -101,12 +100,12 @@ impl Rom {
             let mut output_file = File::create(&target_path).unwrap();
             copy(&mut file, &mut output_file).unwrap();
 
-            println!("creating file {}", target_path.display());
+            info!("creating file {}", target_path.display());
         } else {
             // delete the file
             remove_file(&target_path).unwrap();
 
-            println!("deleting file {}", target_path.display());
+            info!("deleting file {}", target_path.display());
         }
     }
 

@@ -1,5 +1,6 @@
+use crate::rom::Rom;
 use crate::settings::Settings;
-use rom::Rom;
+use log::{trace, warn};
 use slint::*;
 use slint::VecModel;
 use std::env;
@@ -9,8 +10,9 @@ use std::path::Path;
 use std::rc::Rc;
 use std::thread;
 
-mod settings;
+mod logging;
 mod rom;
+mod settings;
 
 slint::include_modules!();
 
@@ -19,6 +21,10 @@ fn main() {
 
     // get the app settings
     let settings = Settings::new().expect("Failed to load settings.toml");
+
+    // initialize logging
+    logging::init(&settings);
+    trace!("Starting Romboy");
 
     // draw the main window
     draw(&main_window, &settings);
@@ -40,14 +46,14 @@ fn draw(main_window: &MainWindow, settings: &Settings) {
         // validate the zip file is a valid rom
         let rom = Rom::new(&path);
         if rom.is_err() {
-            println!("error loading rom: {}", rom.err().unwrap().message);
+            warn!("can't load rom: {}", rom.err().unwrap().message);
             continue;
         }
 
         // validate the platform
         let platform = Rom::get_platform_for_extension(&settings, rom.clone().unwrap());
         if platform.is_err() {
-            println!("error validating platform: {}", platform.err().unwrap().message);
+            warn!("can't find platform: {}", platform.err().unwrap().message);
             continue;
         }
 

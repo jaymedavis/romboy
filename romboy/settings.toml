@@ -2,6 +2,9 @@
 zips = "~/OneDrive/RomM/zips"
 roms = "~/OneDrive/RomM/library/roms"
 
+[logging]
+mode = "file"
+
 [platforms]
 3ds = ["3ds"]
 gb = ["gb"]
