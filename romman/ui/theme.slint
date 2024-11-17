@@ -10,7 +10,7 @@ export struct Palette {
     white: brush,
 
     // gradients
-    heliotrope-gradient: brush,
+    main-gradient: brush,
 }
 
 export struct Window {
@@ -54,12 +54,12 @@ export global Theme {
         white: #ffffff,
 
         // gradients
-        heliotrope-gradient: @linear-gradient(180deg, #896fff 0%, #39316B 100%),
+        main-gradient: @linear-gradient(180deg, #000000 0%, #000000 100%),
     };
 
     in property <Window> window: {
         min-height: 240px,
-        min-width: 500px,
+        min-width: 575px,
         padding: 20px,
     };
 
