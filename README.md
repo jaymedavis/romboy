@@ -1,8 +1,8 @@
-# Rom Boy
+<img src="assets/logo.png" alt="drawing" width="150"/>
 
-extracts your roms from zip files, and puts them in your library in the correct platform.
+extracts your roms from [zip files](https://myrient.erista.me/files/), and puts them in your library under the correct platform
 
-![romboy screen](assets/romboy.png)
+<br/>
 
 ## Run Source
 
@@ -13,3 +13,8 @@ extracts your roms from zip files, and puts them in your library in the correct 
     - roms is the location of your rom library.  This could be your [RomM Library](https://romm.app), syncthing library, or an SD card.  For now, the path is expected to be in the `roms/platform/game` format.  e.g.  roms/nes/Legend of Zelda, The.nes
 
 * ``cargo run``
+
+<br/>
+
+## v0.1.0
+![romboy screen](assets/romboy.png)
