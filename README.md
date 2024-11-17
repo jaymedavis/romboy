@@ -1,6 +1,6 @@
 # Rom Boy
 
-romboy extracts your roms from zip files, and puts them in your library in the correct platform.
+extracts your roms from zip files, and puts them in your library in the correct platform.
 
 ![romboy screen](assets/romboy.png)
 
