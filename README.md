@@ -14,7 +14,9 @@ extracts roms from [zip files](https://myrient.erista.me/files/), and puts them 
 
 For now, the path is expected to be in the `roms/platform/game` format.  e.g.  roms/nes/Legend of Zelda, The.nes
 
-A command window will launch in the background, so you can see the logs
+## Logging
+
+the app logs to the file `logs/app.log`. If you'd rather see the logs in a terminal (or for a dev environment), change `mode` in `settings.toml` to `stdout`
 
 ## Run Source
 
