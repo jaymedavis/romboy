@@ -24,7 +24,7 @@ fn main() {
 
     // initialize logging
     logging::init(&settings);
-    trace!("Starting Romboy");
+    trace!("romboy started");
 
     // draw the main window
     draw(&main_window, &settings);
@@ -39,8 +39,12 @@ fn draw(main_window: &MainWindow, settings: &Settings) {
     // hold our processed file information
     let mut temp_rows: Vec<TableRow> = Vec::new();
 
+    let file_count = fs::read_dir(settings.zips_path()).unwrap().count();
+    main_window.set_percent(0.0);
+    trace!("drawing screen: reading {} files", file_count);
+
     // read the files in the zips directory
-    for (_index, item) in fs::read_dir(settings.zips_path()).unwrap().into_iter().enumerate() {
+    for (index, item) in fs::read_dir(settings.zips_path()).unwrap().into_iter().enumerate() {
         let path = item.unwrap().path();
 
         // validate the zip file is a valid rom
@@ -69,12 +73,16 @@ fn draw(main_window: &MainWindow, settings: &Settings) {
         };
 
         temp_rows.push(table_entry);
-        main_window.set_percent(0.56);
+
+        let percent_complete = (index as f32) * 0.01 * (file_count as f32);
+        main_window.set_percent(percent_complete);
     }
 
     //  add our temp rows to the main window
     let table_rows: Rc<VecModel<TableRow>> = Rc::new(VecModel::from(temp_rows));
     main_window.set_rows(table_rows.into());
+
+    trace!("draw complete");
 }
 
 fn asset_image(platform: String) -> Image {
@@ -87,6 +95,12 @@ fn events(main_window: &Rc<MainWindow>, settings: &Settings) {
     let settings_clone = settings.clone();
 
     main_window.global::<TableRowBackend>().on_clicked(move |file_name: SharedString, delete_file: bool| {
+        if delete_file {
+            trace!("preparing delete: {}", file_name.to_string());
+        } else {
+            trace!("preparing add: {}", file_name.to_string());
+        }
+
         modify_file(&settings_clone, file_name.to_string(), delete_file);
         draw(&main_window_clone, &settings_clone);
 	});
@@ -105,9 +119,15 @@ fn modify_file(settings: &Settings, file_name: String, delete_file: bool) {
                 let settings_clone = settings.clone();
                 let rom_clone = rom.clone();
 
-                thread::spawn(move || {
+                trace!("spawning thread to modify {}", rom.name);
+
+                let handle = thread::spawn(move || {
+                    trace!("  thread spawn >>");
                     Rom::modify_file(&settings_clone, rom_clone, delete_file);
+                    trace!("  << spawn thread");
                 });
+
+                handle.join().unwrap();
             }
         }
     }

@@ -16,7 +16,7 @@ For now, the path is expected to be in the `roms/platform/game` format.  e.g.  r
 
 ## Logging
 
-the app logs to the file `logs/app.log`. If you'd rather see the logs in a terminal (or for a dev environment), change `mode` in `settings.toml` to `stdout`
+the app logs to the file `logs/app.log`. If you'd rather see the logs in a terminal (or for a dev environment), change `mode` in `settings.toml` to `stdout`.  The log `level` can be set to `Off`, `Error`, `Warn`, `Info`, `Debug`, `Trace`
 
 ## Run Source
 

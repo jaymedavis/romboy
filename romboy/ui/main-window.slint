@@ -1,4 +1,4 @@
-import { ListView, ProgressIndicator } from "std-widgets.slint";
+import { ListView, Spinner } from "std-widgets.slint";
 import { TableHeader } from "table-header.slint";
 import { TableRow, TableRowBackend, TableRowView } from "table-row.slint";
 import { Theme } from "theme.slint";
@@ -41,11 +41,12 @@ export component MainWindow inherits Window {
             TableHeader {
                 width: 10%;
 
-                // need to figure out how to style this thing
-                // ProgressIndicator {
-                //     width: parent.width / 2;
-                //     height: parent.height / 2;
+                // Spinner {
                 //     progress: percent;
+                // }
+
+                // Text {
+                //     text: percent + "%";
                 // }
             }
         }

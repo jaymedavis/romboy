@@ -19,6 +19,7 @@ struct Path {
 #[derive(Debug, Deserialize, Clone)]
 pub(crate) struct Logging {
     pub(crate) mode: String,
+    pub(crate) level: String,
 }
 
 impl Settings {

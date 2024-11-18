@@ -4,6 +4,7 @@ roms = "~/OneDrive/RomM/library/roms"
 
 [logging]
 mode = "file"
+level = "trace"
 
 [platforms]
 3ds = ["3ds"]
