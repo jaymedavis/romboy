@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use crate::rom::Rom;
 use crate::settings::Settings;
 use log::{trace, warn};
