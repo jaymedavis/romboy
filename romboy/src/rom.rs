@@ -85,12 +85,6 @@ impl Rom {
         let rom_extract = Self::rom_extract(settings, rom);
         let path = Path::new(rom_extract.path.as_str());
 
-        if delete_file {
-            trace!("deleting {}", file.name());
-        } else {
-            trace!("creating {}", file.name());
-        }
-
         // create the platform directory if it doesn't exist
         if !path.exists() && !delete_file {
             trace!("creating path, it doesn't exist: {}", path.display());
