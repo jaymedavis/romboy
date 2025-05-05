@@ -20,6 +20,8 @@ struct Path {
 pub(crate) struct Logging {
     pub(crate) mode: String,
     pub(crate) level: String,
+    pub(crate) pattern: String,
+    pub(crate) file_path: String,
 }
 
 impl Settings {

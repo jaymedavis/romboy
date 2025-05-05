@@ -5,6 +5,8 @@ roms = "~/OneDrive/RomM/library/roms"
 [logging]
 mode = "file"
 level = "trace"
+pattern = "{h({d(%Y-%m-%d %H:%M:%S)(utc)} - {l}: {m}{n})}"
+file_path = "logs/app.log"
 
 [platforms]
 3ds = ["3ds"]

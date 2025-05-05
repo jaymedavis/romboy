@@ -11,16 +11,16 @@ use log4rs::encode::pattern::PatternEncoder;
 pub fn init(settings: &Settings) {
     let logging_mode = settings.clone().logging.mode;
     let logging_level = LevelFilter::from_str(settings.clone().logging.level.as_str()).unwrap();
-    let logging_pattern = "{h({d(%Y-%m-%d %H:%M:%S)(utc)} - {l}: {m}{n})}";
+    let logging_pattern = settings.clone().logging.pattern;
     let appender = logging_mode.to_lowercase();
 
     let stdout = ConsoleAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(logging_pattern)))
+        .encoder(Box::new(PatternEncoder::new(&logging_pattern)))
         .build();
 
     let file = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(logging_pattern)))
-        .build("logs/app.log")
+        .encoder(Box::new(PatternEncoder::new(&logging_pattern)))
+        .build(&settings.clone().logging.file_path)
         .unwrap();
 
     let config = Config::builder()
